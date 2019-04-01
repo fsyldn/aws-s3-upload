@@ -5,10 +5,10 @@
     let s3 = new s3Upload({
         apiVersion: '2006-03-01',
         params: {
-            Bucket: 'szdevbucket'
+            Bucket: Bucket
         },
-        accessKeyId: 'DTI0EBBHXV26LFQND7IP',
-        secretAccessKey: 'u6IROF7jSqjOMMzSMAOP3EdDe9wLRBjc9Nn3DsRp',
+        accessKeyId: accessKeyId,
+        secretAccessKey: secretAccessKey,
         endpoint: 'http://10.0.7.231',
     })
     // 上传
