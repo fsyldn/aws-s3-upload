@@ -146,6 +146,7 @@ s3MultiUpload.prototype.uploadParts = function(partNumber,filePart,id){
  
         }
         var obj = {
+            ETag: 'tt',
             PartNumbeer:partNum
         }
         vm.complete_part.push(obj)
@@ -246,8 +247,8 @@ s3MultiUpload.prototype.onProgress = function(as){
     this.progressArr.forEach(function(item,indx){
         a += parseInt(item || '0')
     });
- 
-    var perc = Math.floor(a*100/this.total_size) == 1?99:a*100/this.total_size
+    // console.log(Math.floor(a*100/this.total_size),this.total_size,a)
+    var perc = Math.floor(a*100/this.total_size) == 100?99:a*100/this.total_size
     this.onprogress(Math.floor(perc))
 }
 s3MultiUpload.prototype.onSuccess = function(data){
@@ -305,12 +306,12 @@ s3MultiUpload.prototype.abort = function(id){
     this.uploadArr.forEach(function(item,index){
         item?item.abort():''
     });
-    vm.onError('已终止上传')
+    vm.onError('http abort','已终止上传')
     vm.stopFlag = true
 }
 s3MultiUpload.prototype.cotinueUpload = function(id){
     if(!id){
-        this.onError('id不能为空！')
+        this.onError('id is null','id不能为空！')
         return false
     }
     this.uploadId = id;

@@ -45,7 +45,8 @@
             /* required */
             restart: false, // 默认为true，可以阻止初始化，调用可用方法 init -- 重传用
             uploadNum: 5, // 每次上传的块并发数 默认5
-            key: file.name,
+            size_limit:5,// 分块大小 单位iMB -- 5-1000 默认5
+            key: file.name,// 文件名--默认file.name
             //    成功回调
             onsuccess: function (res) {
                 console.log(res)
@@ -57,6 +58,7 @@
             },
             //    进度
             onprogress:function(percent) {
+                console.log(percent)
                 document.getElementById('progress').innerHTML = percent + '%'
             },
             onuploadId:function(id) { // 非必选
