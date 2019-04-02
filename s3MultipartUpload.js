@@ -106,11 +106,12 @@ s3MultiUpload.prototype.uploadControllerLimit = function(){
 }
 s3MultiUpload.prototype.uploadController = function(files){
     var vm = this
+	vm.upload_limit_list = files
+        // vm.upload_uploadarr = []
+    vm.upload_index = this.uploadNum
     // 大于限制，并发控制
     if(files.length>this.uploadNum){
-        vm.upload_limit_list = files
-        // vm.upload_uploadarr = []
-        vm.upload_index = this.uploadNum
+       
         files.forEach(function(item,index){
             if(index<vm.uploadNum){
                 vm.uploadParts((parseInt(index)+1),item,vm.uploadId)
