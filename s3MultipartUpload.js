@@ -185,7 +185,7 @@ s3MultiUpload.prototype.listParts = function(ids){
             var live = data.Parts
             var partss = vm.getPartss(live)
             vm.complete_part = partss;
-            console.log(live,data,partss)
+            // console.log(live,data,partss)
             // 如果上传完了组合生成url
             if(live.length == vm.parts){
                 vm.completeUpload(ids,partss)
@@ -228,7 +228,7 @@ s3MultiUpload.prototype.completeUpload = function(id,partss){
         if(err){
             vm.onError(err,'分块组合出错')
         }else{
-            vm.onProgress(100)
+            vm.onProgress(100,'100.00')
             vm.onSuccess(data)
         }
     })
@@ -236,9 +236,9 @@ s3MultiUpload.prototype.completeUpload = function(id,partss){
 s3MultiUpload.prototype.onError = function(data,item){
     this.onerror(data,item)
 }
-s3MultiUpload.prototype.onProgress = function(as){
+s3MultiUpload.prototype.onProgress = function(as,stringas){
     if(as){
-        this.onprogress(as)
+        this.onprogress(as,as)
         return false
     }
     var a = 0
@@ -248,9 +248,11 @@ s3MultiUpload.prototype.onProgress = function(as){
     this.progressArr.forEach(function(item,indx){
         a += parseInt(item || '0')
     });
-    // console.log(Math.floor(a*100/this.total_size),this.total_size,a)
-    var perc = Math.floor(a*100/this.total_size) == 100?99:a*100/this.total_size
-    this.onprogress(Math.floor(perc))
+    // var perc = Math.floor(a*100/this.total_size) == 100?99:a*100/this.total_size
+    // this.onprogress(Math.floor(perc))
+    // 保留小数
+    var perc = a*100/this.total_size >= 99.99?99.99:a*100/this.total_size
+    this.onprogress(parseFloat(perc.toFixed(2)),perc)
 }
 s3MultiUpload.prototype.onSuccess = function(data){
     this.onsuccess(data)
@@ -273,7 +275,7 @@ s3MultiUpload.prototype.fileSlice = function(file,num,size){
         }else{
             partfile = file.slice((i-1)*size)
         }
-        console.log(partfile.size)
+        // console.log(partfile.size)
         arr.push(partfile)
     }
     return arr
